@@ -20,52 +20,70 @@
         <div id="result"></div>
     </div>
 
-    <script>
-        // 从URL中获取哈希参数（如果用户是扫描二维码过来的）
-        const urlParams = new URLSearchParams(window.location.search);
-        const hashFromUrl = urlParams.get('hash');
-        if (hashFromUrl) {
-            document.getElementById('hashInput').value = hashFromUrl;
-            checkHash();
+   <script>
+    // 从URL中获取哈希参数（如果用户是扫描二维码过来的）
+    const urlParams = new URLSearchParams(window.location.search);
+    const hashFromUrl = urlParams.get('hash');
+    if (hashFromUrl) {
+        document.getElementById('hashInput').value = hashFromUrl;
+        checkHash();
+    }
+
+    async function checkHash() {
+        const inputHash = document.getElementById('hashInput').value.trim();
+        const resultDiv = document.getElementById('result');
+        
+        if (!inputHash) {
+            resultDiv.innerHTML = "<p class='invalid'>请输入哈希码</p>";
+            return;
         }
 
-        function checkHash() {
-            const inputHash = document.getElementById('hashInput').value.trim();
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = "<p>正在验证...</p>";
+        resultDiv.innerHTML = "<p>正在验证...</p>";
 
-            // 重要：直接链接到你的 verification.json 文件的RAW地址
-            const verificationFileURL = 'https://raw.githubusercontent.com/你的用户名/你的仓库名/main/verification.json';
+        // 使用CORS代理访问Raw GitHub Content
+        const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest=';
+        const targetUrl = 'https://raw.githubusercontent.com/你的用户名/你的仓库名/main/verification.json';
+        const verificationFileURL = proxyUrl + encodeURIComponent(targetUrl);
 
-            fetch(verificationFileURL)
-                .then(response => response.json())
-                .then(data => {
-                    // 检查输入的哈希是否存在于JSON数组中
-                    const found = data.find(entry => entry.hash === inputHash);
+        try {
+            const response = await fetch(verificationFileURL);
+            
+            if (!response.ok) {
+                throw new Error(`网络响应不正常: ${response.status}`);
+            }
+            
+            const data = await response.json();
 
-                    if (found) {
-                        resultDiv.innerHTML = `
-                            <div class="valid">
-                                <h2>✅ 证书有效！</h2>
-                                <p>此证书颁发给：<strong>${found.github_username}</strong></p>
-                                <p>贡献等级：<strong>${found.level}</strong></p>
-                                <p>颁发日期：<strong>${found.date_issued}</strong></p>
-                            </div>
-                        `;
-                    } else {
-                        resultDiv.innerHTML = `
-                            <div class="invalid">
-                                <h2>❌ 证书无效</h2>
-                                <p>未能找到与该哈希值匹配的证书记录。此证书可能为伪造或未被登记。</p>
-                            </div>
-                        `;
-                    }
-                })
-                .catch(error => {
-                    resultDiv.innerHTML = `<p class="invalid">验证过程中出错，请稍后再试。</p>`;
-                    console.error("Error:", error);
-                });
+            // 检查输入的哈希是否存在于JSON数组中
+            const found = data.find(entry => entry.hash === inputHash);
+
+            if (found) {
+                resultDiv.innerHTML = `
+                    <div class="valid">
+                        <h2>✅ 证书有效！</h2>
+                        <p>此证书颁发给：<strong>${found.github_username}</strong></p>
+                        <p>贡献等级：<strong>${found.level}</strong></p>
+                        <p>颁发日期：<strong>${found.date_issued}</strong></p>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="invalid">
+                        <h2>❌ 证书无效</h2>
+                        <p>未能找到与该哈希值匹配的证书记录。此证书可能为伪造或未被登记。</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+            resultDiv.innerHTML = `
+                <div class="invalid">
+                    <h2>⚠️ 验证服务暂时不可用</h2>
+                    <p>请稍后再试。错误详情: ${error.message}</p>
+                </div>
+            `;
         }
-    </script>
+    }
+</script>
 </body>
 </html>
