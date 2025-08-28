@@ -44,7 +44,7 @@
         }
         
         .logo {
-            max-width: 300px;  /* 调整Logo大小 */
+            max-width: 300px;
             height: auto;
             margin-bottom: 15px;
         }
@@ -63,7 +63,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            animation: fadeIn 0.6s ease-out;
+            animation: fade极速 0.6s ease-out;
         }
         
         @keyframes fadeIn {
@@ -114,7 +114,7 @@
             border: 2px solid #e1e5ee;
             border-radius: 8px 0 0 8px;
             font-size: 1rem;
-            transition: border-color 极速;
+            transition: border-color 0.3s;
         }
         
         .input-group input:focus {
@@ -127,7 +127,7 @@
             color: white;
             border: none;
             padding: 0 25px;
-            border-radius: 0 8极速 8极速 0;
+            border-radius: 0 8px 8px 0;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
@@ -144,7 +144,7 @@
             margin-top: 15px;
         }
         
-        .qr-极速 a {
+        .qr-option a {
             color: var(--primary-color);
             text-decoration: none;
             display: inline-flex;
@@ -167,7 +167,7 @@
             justify-content: center;
         }
         
-        .result-content {
+极速        .result-content {
             text-align: center;
             width: 100%;
         }
@@ -185,7 +185,7 @@
             border-radius: 50%;
             border-top-color: var(--primary-color);
             animation: spin 1s ease-in-out infinite;
-            margin-bottom: 15极速;
+            margin-bottom: 15px;
         }
         
         @keyframes spin {
@@ -215,7 +215,7 @@
         
         .error {
             background-color: rgba(255, 193, 7, 0.1);
-            border极速 2px solid var(--warning-color);
+            border: 2px solid var(--warning-color);
             color: var(--warning-color);
         }
         
@@ -231,7 +231,7 @@
             font-size: 1.8rem;
         }
         
-极速        .result p {
+        .result p {
             margin: 8px 0;
             font-size: 1.1rem;
         }
@@ -268,7 +268,7 @@
             }
             
             .logo {
-                max-width: 200px;  /* 在移动设备上减小Logo大小 */
+                max-width: 200px;
             }
         }
     </style>
@@ -277,13 +277,12 @@
     <div class="logo-container">
         <!-- 使用相对路径引用logo -->
         <img src="./static/images/logo.svg" alt="公司Logo" class="logo" onerror="this.style.display='none'">
-        <div class="company-name">科技科技有限公司</div>
     </div>
     
     <div class="container">
         <header>
             <h1><i class="fas fa-certificate"></i> 开发者贡献证书验证</h1>
-            <p>验证您的开发者贡献证书真实性与有效性</p>
+            <极速>验证您的开发者贡献证书真实性与有效性</p>
         </header>
         
         <div class="content">
@@ -293,14 +292,14 @@
                     <button onclick="checkHash()">验证证书</button>
                 </div>
                 <div class="qr-option">
-                    <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><极速 class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
+                    <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><i class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
                 </div>
             </div>
             
             <div class="result-section">
                 <div class="result-content">
                     <div class="loading" id="loading">
-                        <div class="spinner"></div>
+                        <div class极速="spinner"></div>
                         <p>正在验证证书，请稍候...</p>
                     </div>
                     
@@ -314,13 +313,13 @@
                     <div class="result invalid" id="invalidResult">
                         <h2><i class="fas fa-times-circle"></i> 证书无效</h2>
                         <p>未能找到与该哈希值匹配的证书记录。</p>
-                        <p>此证书可能为伪造或未被登记。</极速>
+                        <p>此证书可能为伪造或未被登记。</p>
                     </div>
                     
                     <div class="result error" id="errorResult">
-                        <h2><i class="fas fa-exclamation-triangle"></i> 验证服务暂时不可用</h2>
+                        <h2><i class="fas fa-exclamation-triangle"></极速> 验证服务暂时不可用</h2>
                         <p>请稍后再试。</p>
-                        <p>错误详情: <strong id="errorDetail"></strong></p>
+                        <p>错误详情: <strong id="errorDetail"></strong></极速>
                     </div>
                 </div>
             </div>
@@ -351,7 +350,7 @@
             // 隐藏所有结果，显示加载中
             validEl.style.display = 'none';
             invalidEl.style.display = 'none';
-            error极速.style.display = 'none';
+            errorEl.style.display = 'none';
             loadingEl.style.display = 'flex';
             
             if (!inputHash) {
@@ -362,7 +361,7 @@
             try {
                 // 使用CORS代理访问Raw GitHub Content
                 const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest=';
-                const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors/main/verification.json';
+                const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors//main/verification.json';
                 const verificationFileURL = proxyUrl + encodeURIComponent(targetUrl);
 
                 const response = await fetch(verificationFileURL);
