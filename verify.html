@@ -298,12 +298,15 @@
 </head>
 <body>
     <div class="logo-container">
-        <!-- 替换下面的src为您的公司logo URL -->
-        <img src="./static/images/logo.svg" alt="公司Logo" class="logo">
+        <!-- 使用相对路径引用logo -->
+        <img src="./static/images/logo.svg" alt="公司Logo" class="logo" onerror="this.style.display='none'">
+        <div class="company-name">科技科技有限公司</div>
     </div>
     
     <div class="container">
         <header>
+            <!-- 使用相对路径引用页头logo -->
+            <img src="./static/images/logo.svg" alt="验证系统" class="header-logo" onerror="this.style.display='none'">
             <h1><i class="fas fa-certificate"></i> 开发者贡献证书验证</h1>
             <p>验证您的开发者贡献证书真实性与有效性</p>
         </header>
@@ -349,9 +352,9 @@
         </div>
         
         <footer>
-            <!-- 页脚logo -->
-            <img src="https://via.placeholder.com/120x30/6c757d/ffffff?text=Company" alt="公司Logo" class="footer-logo">
-            <p>© 2025 北京人形机器人创新中心 | 开发者贡献证书验证系统</p>
+            <!-- 使用相对路径引用页脚logo -->
+            <img src="./images/footer-logo.png" alt="公司Logo" class="footer-logo" onerror="this.style.display='none'">
+            <p>© 2023 科技科技有限公司 | 开发者贡献证书验证系统</p>
             <p>本验证结果仅证明证书真实性</p>
         </footer>
     </div>
@@ -370,7 +373,7 @@
             const loadingEl = document.getElementById('loading');
             const validEl = document.getElementById('validResult');
             const invalidEl = document.getElementById('invalidResult');
-            const errorEl = document.getElementById('errorResult');
+            const errorEl = document.getElementById('errorResult");
             
             // 隐藏所有结果，显示加载中
             validEl.style.display = 'none';
