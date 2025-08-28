@@ -2,22 +2,358 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>证书验证中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开发者贡献证书验证系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 40px; }
-        .valid { color: green; }
-        .invalid { color: red; }
-        .result { font-size: 1.5em; margin-top: 20px; }
+        :root {
+            --primary-color: #2d5bff;
+            --secondary-color: #6c63ff;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --bg-gradient: linear-gradient(120deg, #e0e7ff 0%, #d1e0ff 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark-color);
+        }
+        
+        .logo-container {
+            margin-bottom: 30px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header-logo {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            height: 40px;
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        header h1 i {
+            margin-right: 15px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e1e5ee;
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .input-group button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .input-group button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(45, 91, 255, 0.3);
+        }
+        
+        .qr-option {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .qr-option a {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        .qr-option a i {
+            margin-right: 8px;
+        }
+        
+        .qr-option a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .result-section {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result-content {
+            text-align: center;
+            width: 100%;
+        }
+        
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .result {
+            display: none;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .valid {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
+        }
+        
+        .invalid {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+        
+        .error {
+            background-color: rgba(255, 193, 7, 0.1);
+            border: 2px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+        
+        .result h2 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result h2 i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .result p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        
+        .result strong {
+            color: var(--dark-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--light-color);
+            color: var(--gray-color);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            height: 30px;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .input-group input {
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            
+            .input-group button {
+                border-radius: 8px;
+                padding: 15px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header-logo {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 15px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>🗃️ 开发者贡献证书验证系统</h1>
-    <p>请输入证书上的哈希码，或直接扫描证书二维码进行验证。</p>
-
-    <div id="app">
-        <input type="text" id="hashInput" placeholder="请输入证书哈希码..." style="width: 400px; padding: 10px;">
-        <button onclick="checkHash()">验证</button>
-        <div id="result"></div>
+    <div class="logo-container">
+        <!-- 替换下面的src为您的公司logo URL -->
+        <img src="https://via.placeholder.com/200x60/2d5bff/ffffff?text=Company+Logo" alt="公司Logo" class="logo">
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-certificate"></i> 开发者贡献证书验证</h1>
+            <p>验证您的开发者贡献证书真实性与有效性</p>
+        </header>
+        
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <input type="text" id="hashInput" placeholder="请输入证书上的哈希验证码...">
+                    <button onclick="checkHash()">验证证书</button>
+                </div>
+                <div class="qr-option">
+                    <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><i class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="result-content">
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>正在验证证书，请稍候...</p>
+                    </div>
+                    
+                    <div class="result valid" id="validResult">
+                        <h2><i class="fas fa-check-circle"></i> 证书有效！</h2>
+                        <p>此证书颁发给：<strong id="validUsername"></strong></p>
+                        <p>贡献等级：<strong id="validLevel"></strong></p>
+                        <p>颁发日期：<strong id="validDate"></strong></p>
+                    </div>
+                    
+                    <div class="result invalid" id="invalidResult">
+                        <h2><i class="fas fa-times-circle"></i> 证书无效</h2>
+                        <p>未能找到与该哈希值匹配的证书记录。</p>
+                        <p>此证书可能为伪造或未被登记。</p>
+                    </div>
+                    
+                    <div class="result error" id="errorResult">
+                        <h2><i class="fas fa-exclamation-triangle"></i> 验证服务暂时不可用</h2>
+                        <p>请稍后再试。</p>
+                        <p>错误详情: <strong id="errorDetail"></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <!-- 页脚logo -->
+            <img src="https://via.placeholder.com/120x30/6c757d/ffffff?text=Company" alt="公司Logo" class="footer-logo">
+            <p>© 2025 北京人形机器人创新中心 | 开发者贡献证书验证系统</p>
+            <p>本验证结果仅证明证书真实性</p>
+        </footer>
     </div>
 
     <script>
@@ -29,42 +365,70 @@
             checkHash();
         }
 
-        function checkHash() {
+        async function checkHash() {
             const inputHash = document.getElementById('hashInput').value.trim();
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = "<p>正在验证...</p>";
+            const loadingEl = document.getElementById('loading');
+            const validEl = document.getElementById('validResult');
+            const invalidEl = document.getElementById('invalidResult');
+            const errorEl = document.getElementById('errorResult');
+            
+            // 隐藏所有结果，显示加载中
+            validEl.style.display = 'none';
+            invalidEl.style.display = 'none';
+            errorEl.style.display = 'none';
+            loadingEl.style.display = 'flex';
+            
+            if (!inputHash) {
+                showError('请输入哈希码');
+                return;
+            }
 
-            // 重要：直接链接到你的 verification.json 文件的RAW地址
-            const verificationFileURL = 'https://raw.githubusercontent.com/soulferryman/Contributors/main/verification.json';
+            try {
+                // 使用CORS代理访问Raw GitHub Content
+                const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest=';
+                const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors/main/verification.json';
+                const verificationFileURL = proxyUrl + encodeURIComponent(targetUrl);
 
-            fetch(verificationFileURL)
-                .then(response => response.json())
-                .then(data => {
-                    // 检查输入的哈希是否存在于JSON数组中
-                    const found = data.find(entry => entry.hash === inputHash);
+                const response = await fetch(verificationFileURL);
+                
+                if (!response.ok) {
+                    throw new Error(`网络响应不正常: ${response.status}`);
+                }
+                
+                const data = await response.json();
 
-                    if (found) {
-                        resultDiv.innerHTML = `
-                            <div class="valid">
-                                <h2>✅ 证书有效！</h2>
-                                <p>此证书颁发给：<strong>${found.github_username}</strong></p>
-                                <p>贡献等级：<strong>${found.level}</strong></p>
-                                <p>颁发日期：<strong>${found.date_issued}</strong></p>
-                            </div>
-                        `;
-                    } else {
-                        resultDiv.innerHTML = `
-                            <div class="invalid">
-                                <h2>❌ 证书无效</h2>
-                                <p>未能找到与该哈希值匹配的证书记录。此证书可能为伪造或未被登记。</p>
-                            </div>
-                        `;
-                    }
-                })
-                .catch(error => {
-                    resultDiv.innerHTML = `<p class="invalid">验证过程中出错，请稍后再试。</p>`;
-                    console.error("Error:", error);
-                });
+                // 检查输入的哈希是否存在于JSON数组中
+                const found = data.find(entry => entry.hash === inputHash);
+
+                // 隐藏加载中
+                loadingEl.style.display = 'none';
+                
+                if (found) {
+                    // 显示有效结果
+                    document.getElementById('validUsername').textContent = found.github_username;
+                    document.getElementById('validLevel').textContent = found.level;
+                    document.getElementById('validDate').textContent = found.date_issued;
+                    validEl.style.display = 'block';
+                } else {
+                    // 显示无效结果
+                    invalidEl.style.display = 'block';
+                }
+            } catch (error) {
+                // 隐藏加载中，显示错误
+                loadingEl.style.display = 'none';
+                console.error("Fetch error:", error);
+                document.getElementById('errorDetail').textContent = error.message;
+                errorEl.style.display = 'block';
+            }
+        }
+        
+        function showError(message) {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('errorResult');
+            
+            loadingEl.style.display = 'none';
+            document.getElementById('errorDetail').textContent = message;
+            errorEl.style.display = 'block';
         }
     </script>
 </body>
