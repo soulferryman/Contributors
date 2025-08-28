@@ -44,7 +44,7 @@
         }
         
         .logo {
-            max-width: 300px;
+            max-width: 200px;
             height: auto;
             margin-bottom: 15px;
         }
@@ -63,7 +63,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            animation: fade极速 0.6s ease-out;
+            animation: fadeIn 0.6s ease-out;
         }
         
         @keyframes fadeIn {
@@ -76,6 +76,14 @@
             color: white;
             padding: 30px 20px;
             text-align: center;
+            position: relative;
+        }
+        
+        .header-logo {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            height: 40px;
         }
         
         header h1 {
@@ -167,7 +175,7 @@
             justify-content: center;
         }
         
-极速        .result-content {
+        .result-content {
             text-align: center;
             width: 100%;
         }
@@ -246,6 +254,14 @@
             background-color: var(--light-color);
             color: var(--gray-color);
             font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            height: 30px;
+            margin-bottom: 10px;
         }
         
         @media (max-width: 600px) {
@@ -267,22 +283,31 @@
                 font-size: 1.8rem;
             }
             
-            .logo {
-                max-width: 200px;
+            .header-logo {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 15px;
+            }
+            
+            header {
+                padding: 20px 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="logo-container">
-        <!-- 使用相对路径引用logo -->
-        <img src="./static/images/logo.svg" alt="公司Logo" class="logo" onerror="this.style.display='none'">
+        <!-- 替换下面的src为您的公司logo URL -->
+        <img src="./static/images/logo.svg" alt="公司Logo" class="logo">
     </div>
     
     <div class="container">
         <header>
+            <!-- 页头logo -->
+            <img src="https://via.placeholder.com/120x40/ffffff/2d5bff?text=Verify" alt="验证系统" class="header-logo">
             <h1><i class="fas fa-certificate"></i> 开发者贡献证书验证</h1>
-            <极速>验证您的开发者贡献证书真实性与有效性</p>
+            <p>验证您的开发者贡献证书真实性与有效性</p>
         </header>
         
         <div class="content">
@@ -299,7 +324,7 @@
             <div class="result-section">
                 <div class="result-content">
                     <div class="loading" id="loading">
-                        <div class极速="spinner"></div>
+                        <div class="spinner"></div>
                         <p>正在验证证书，请稍候...</p>
                     </div>
                     
@@ -317,15 +342,17 @@
                     </div>
                     
                     <div class="result error" id="errorResult">
-                        <h2><i class="fas fa-exclamation-triangle"></极速> 验证服务暂时不可用</h2>
+                        <h2><i class="fas fa-exclamation-triangle"></i> 验证服务暂时不可用</h2>
                         <p>请稍后再试。</p>
-                        <p>错误详情: <strong id="errorDetail"></strong></极速>
+                        <p>错误详情: <strong id="errorDetail"></strong></p>
                     </div>
                 </div>
             </div>
         </div>
         
         <footer>
+            <!-- 页脚logo -->
+            <img src="https://via.placeholder.com/120x30/6c757d/ffffff?text=Company" alt="公司Logo" class="footer-logo">
             <p>© 2023 科技科技有限公司 | 开发者贡献证书验证系统</p>
             <p>本验证结果仅证明证书真实性</p>
         </footer>
@@ -361,7 +388,7 @@
             try {
                 // 使用CORS代理访问Raw GitHub Content
                 const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest=';
-                const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors//main/verification.json';
+                const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors/main/verification.json';
                 const verificationFileURL = proxyUrl + encodeURIComponent(targetUrl);
 
                 const response = await fetch(verificationFileURL);
