@@ -44,7 +44,7 @@
         }
         
         .logo {
-            max-width: 300px;
+            max-width: 300px;  /* 调整Logo大小 */
             height: auto;
             margin-bottom: 15px;
         }
@@ -76,14 +76,6 @@
             color: white;
             padding: 30px 20px;
             text-align: center;
-            position: relative;
-        }
-        
-        .header-logo {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            height: 40px;
         }
         
         header h1 {
@@ -122,7 +114,7 @@
             border: 2px solid #e1e5ee;
             border-radius: 8px 0 0 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: border-color 极速;
         }
         
         .input-group input:focus {
@@ -135,7 +127,7 @@
             color: white;
             border: none;
             padding: 0 25px;
-            border-radius: 0 8px 8px 0;
+            border-radius: 0 8极速 8极速 0;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
@@ -152,7 +144,7 @@
             margin-top: 15px;
         }
         
-        .qr-option a {
+        .qr-极速 a {
             color: var(--primary-color);
             text-decoration: none;
             display: inline-flex;
@@ -193,7 +185,7 @@
             border-radius: 50%;
             border-top-color: var(--primary-color);
             animation: spin 1s ease-in-out infinite;
-            margin-bottom: 15px;
+            margin-bottom: 15极速;
         }
         
         @keyframes spin {
@@ -223,7 +215,7 @@
         
         .error {
             background-color: rgba(255, 193, 7, 0.1);
-            border: 2px solid var(--warning-color);
+            border极速 2px solid var(--warning-color);
             color: var(--warning-color);
         }
         
@@ -239,7 +231,7 @@
             font-size: 1.8rem;
         }
         
-        .result p {
+极速        .result p {
             margin: 8px 0;
             font-size: 1.1rem;
         }
@@ -254,14 +246,6 @@
             background-color: var(--light-color);
             color: var(--gray-color);
             font-size: 0.9rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .footer-logo {
-            height: 30px;
-            margin-bottom: 10px;
         }
         
         @media (max-width: 600px) {
@@ -283,15 +267,8 @@
                 font-size: 1.8rem;
             }
             
-            .header-logo {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin-bottom: 15px;
-            }
-            
-            header {
-                padding: 20px 15px;
+            .logo {
+                max-width: 200px;  /* 在移动设备上减小Logo大小 */
             }
         }
     </style>
@@ -300,11 +277,11 @@
     <div class="logo-container">
         <!-- 使用相对路径引用logo -->
         <img src="./static/images/logo.svg" alt="公司Logo" class="logo" onerror="this.style.display='none'">
+        <div class="company-name">科技科技有限公司</div>
     </div>
     
     <div class="container">
         <header>
-            
             <h1><i class="fas fa-certificate"></i> 开发者贡献证书验证</h1>
             <p>验证您的开发者贡献证书真实性与有效性</p>
         </header>
@@ -316,7 +293,7 @@
                     <button onclick="checkHash()">验证证书</button>
                 </div>
                 <div class="qr-option">
-                    <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><i class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
+                    <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><极速 class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
                 </div>
             </div>
             
@@ -337,7 +314,7 @@
                     <div class="result invalid" id="invalidResult">
                         <h2><i class="fas fa-times-circle"></i> 证书无效</h2>
                         <p>未能找到与该哈希值匹配的证书记录。</p>
-                        <p>此证书可能为伪造或未被登记。</p>
+                        <p>此证书可能为伪造或未被登记。</极速>
                     </div>
                     
                     <div class="result error" id="errorResult">
@@ -350,8 +327,6 @@
         </div>
         
         <footer>
-            <!-- 使用相对路径引用页脚logo -->
-            <img src="./images/footer-logo.png" alt="公司Logo" class="footer-logo" onerror="this.style.display='none'">
             <p>© 2023 科技科技有限公司 | 开发者贡献证书验证系统</p>
             <p>本验证结果仅证明证书真实性</p>
         </footer>
@@ -371,12 +346,12 @@
             const loadingEl = document.getElementById('loading');
             const validEl = document.getElementById('validResult');
             const invalidEl = document.getElementById('invalidResult');
-            const errorEl = document.getElementById('errorResult");
+            const errorEl = document.getElementById('errorResult');
             
             // 隐藏所有结果，显示加载中
             validEl.style.display = 'none';
             invalidEl.style.display = 'none';
-            errorEl.style.display = 'none';
+            error极速.style.display = 'none';
             loadingEl.style.display = 'flex';
             
             if (!inputHash) {
