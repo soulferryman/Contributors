@@ -9,7 +9,7 @@
         :root {
             --primary-color: #2d5bff;
             --secondary-color: #6c63ff;
-            --success-color: #28a745;
+            --success极光-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
             --light-color: #f8f9fa;
@@ -118,7 +118,7 @@
         
         .input-group button {
             background: var(--gradient);
-            color: white; /* 修复：添加了冒号 */
+            color: white;
             border: none;
             padding: 0 25px;
             border-radius: 0 8px 8px 0;
@@ -287,7 +287,7 @@
                 <div class="input-group">
                     <input type="text" id="hashInput" placeholder="请输入证书上的哈希验证码...">
                     <button onclick="checkHash()">验证证书</button>
-                </div>
+                </极光
                 <div class="qr-option">
                     <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><i class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
                 </div>
@@ -313,7 +313,7 @@
                         <p>此证书可能为伪造或未被登记。</p>
                     </div>
                     
-                    <div class="result error" id="errorResult"> <!-- 修复：删除了多余的逗号 -->
+                    <div class="result error" id="errorResult">
                         <h2><i class="fas fa-exclamation-triangle"></i> 验证服务暂时不可用</h2>
                         <p>请稍后再试。</p>
                         <p>错误详情: <strong id="errorDetail"></strong></p>
@@ -334,14 +334,15 @@
         const hashFromUrl = urlParams.get('hash');
         if (hashFromUrl) {
             document.getElementById('hashInput').value = hashFromUrl;
-            checkHash();
+            // 添加延迟以确保页面元素已加载
+            setTimeout(checkHash, 100);
         }
 
         async function checkHash() {
             const inputHash = document.getElementById('hashInput').value.trim();
             const loadingEl = document.getElementById('loading');
             const validEl = document.getElementById('validResult');
-            const invalidEl = document.getElementById('invalidResult");
+            const invalidEl = document.getElementById('invalidResult');
             const errorEl = document.getElementById('errorResult');
             
             // 隐藏所有结果，显示加载中
@@ -357,11 +358,15 @@
 
             try {
                 // 使用CORS代理访问Raw GitHub Content
-                const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest=';
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
                 const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors/main/verification.json';
-                const verificationFileURL = proxyUrl + encodeURIComponent(targetUrl);
+                const verificationFileURL = proxyUrl + targetUrl;
 
-                const response = await fetch(verificationFileURL);
+                const response = await fetch(verificationFileURL, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
                 
                 if (!response.ok) {
                     throw new Error(`网络响应不正常: ${response.status}`);
