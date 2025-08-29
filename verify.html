@@ -9,7 +9,7 @@
         :root {
             --primary-color: #2d5bff;
             --secondary-color: #6c63ff;
-            --success极光-color: #28a745;
+            --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
             --light-color: #f8f9fa;
@@ -48,6 +48,13 @@
             height: auto;
             margin-bottom: 15px;
         }
+        .company-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+        
         
         .container {
             width: 100%;
@@ -274,6 +281,9 @@
     <div class="logo-container">
         <!-- 替换下面的src为您的公司logo URL -->
         <img src="./static/images/logo.svg" alt="公司Logo" class="logo">
+        <!-- 
+        <div class="company-name">科技科技有限公司</div>
+        -->
     </div>
     
     <div class="container">
@@ -287,7 +297,7 @@
                 <div class="input-group">
                     <input type="text" id="hashInput" placeholder="请输入证书上的哈希验证码...">
                     <button onclick="checkHash()">验证证书</button>
-                </极光
+                </div>
                 <div class="qr-option">
                     <a href="javascript:void(0)" onclick="alert('请使用手机摄像头扫描证书上的二维码')"><i class="fas fa-qrcode"></i> 使用二维码扫描验证</a>
                 </div>
@@ -334,8 +344,7 @@
         const hashFromUrl = urlParams.get('hash');
         if (hashFromUrl) {
             document.getElementById('hashInput').value = hashFromUrl;
-            // 添加延迟以确保页面元素已加载
-            setTimeout(checkHash, 100);
+            checkHash();
         }
 
         async function checkHash() {
@@ -358,15 +367,11 @@
 
             try {
                 // 使用CORS代理访问Raw GitHub Content
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const proxyUrl = 'https://api.codetabs.com/v1/proxy?quest=';
                 const targetUrl = 'https://raw.githubusercontent.com/soulferryman/Contributors/main/verification.json';
-                const verificationFileURL = proxyUrl + targetUrl;
+                const verificationFileURL = proxyUrl + encodeURIComponent(targetUrl);
 
-                const response = await fetch(verificationFileURL, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
+                const response = await fetch(verificationFileURL);
                 
                 if (!response.ok) {
                     throw new Error(`网络响应不正常: ${response.status}`);
